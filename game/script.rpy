@@ -39,6 +39,22 @@ label start:
 
     e "Once you add a story, pictures, and music, you can release it to the world!"
 
+    hide eileen happy
+
+    "Welcome to Project Syntara"
+
+    menu:
+        "This is an example of a menu"
+
+        "Choice 1":
+            "You chose choice 1"
+
+        "Choice 2":
+            "You chose choice 2"
+
+        "Choice 3":
+            "You chose choice 3"
+
     scene cryo
 
     "A deep red light flashes through the ship, slow and steady. One by one, the cryo pods hiss open. Cold mist spills out and spreads across the floor."
