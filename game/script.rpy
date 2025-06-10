@@ -241,7 +241,6 @@ screen unblock_puzzle:
     add block_SM
 
 label solved_puzzle:
-    scene cryo
     "Puzzle completed!"
     jump scene_2
 
@@ -333,8 +332,6 @@ label scene_1:
 
     "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
 
-    scene hallway_one_light
-
     p "This'll take a few tries. Stay back, just in case it sparks."
 
     show c
@@ -352,13 +349,15 @@ label scene_2:
 
     "Sparks fly as you twist the wires into place, one after another."
 
+    scene hallway_one_light
+
     "The ship lets out a deep groan, like it's fighting you."
 
     scene hallway
 
     "The lights fade... then flicker back on, brighter."
 
-    scene hallway_one_light
+    scene hallway_both_lights
 
     "The door starts to open - slow and shaky."
 
