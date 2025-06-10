@@ -226,13 +226,13 @@ init python:
 
 
 screen unblock_puzzle:
-    image "puzzle-bg.png"
-    image "puzzle-frame.png" pos puzzle_frame_pos
+    image "minigame/puzzle-bg.png"
+    image "minigame/puzzle-frame.png" pos puzzle_frame_pos
     add block_SM
 
 label solved_puzzle:
     scene cryo
-    "I solved the puzzle!"
+    "Puzzle completed!"
     jump scene_2
 
 
@@ -241,12 +241,12 @@ label start:
 
     $ block_SM = SpriteManager(update = blocks_update, event = blocks_events)
     $ block_sprites = []
-    $ long_h_block = Image("long-horizontal-block.png")
-    $ long_v_block = Image("long-vertical-block.png")
-    $ short_h_block = Image("short-horizontal-block.png")
-    $ short_v_block = Image("short-vertical-block.png")
-    $ red_block = Image("red-block.png")
-    $ goal = Image("goal-vertical.png")
+    $ long_h_block = Image("minigame/long-horizontal-block.png")
+    $ long_v_block = Image("minigame/long-vertical-block.png")
+    $ short_h_block = Image("minigame/short-horizontal-block.png")
+    $ short_v_block = Image("minigame/short-vertical-block.png")
+    $ red_block = Image("minigame/red-block.png")
+    $ goal = Image("minigame/goal-vertical.png")
     $ long_v_block_size = (140, 452)
     $ long_h_block_size = (452, 140)
     $ short_v_block_size = (140, 302)
@@ -272,11 +272,6 @@ label scene_1:
     # (groggy, scanning control panel)
     p "Why did the system wake us? This isn't scheduled."
 
-    "Minigame: Puzzle Block"
-    $ create_blocks()
-    call screen unblock_puzzle
-
-label scene_2:
     # (pulls on jacket, annoyed)
     c "That's not just an early wakeup... That's a full-system alert. Something hit critical."
 
@@ -322,6 +317,11 @@ label scene_2:
     c "Just don't fry yourself."
 
     # MINIGAME BEGINS HERE
+
+    $ create_blocks()
+    call screen unblock_puzzle
+
+label scene_2:
 
     "Your fingers move fast, trying to make sense of the mess."
 
@@ -369,3 +369,6 @@ label scene_2:
     "No one speaks, but the fear is there - heavy and real."
 
     "Whatever happened to Earth... already started."
+
+    # This ends the game
+    return
