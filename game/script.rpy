@@ -3,20 +3,30 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define e = Character("Eileen")
-
 define p = Character("Player")
 
 define c = Character("Commander")
+image c = "characters/commander.png"
 
 define a = Character("AI Specialist")
 
 define b = Character("Biologist")
+image b = "characters/biologist.png"
 
 define m = Character("Medic")
 
 define n = Character("Navigator")
 
+image cryo = "backgrounds/cryo.png"
+image cryo_red_alert = "backgrounds/cryo_red_alert.png"
+image engine_room = "backgrounds/engine_room.png"
+image engine_room_left_lights = "backgrounds/engine_room_left_lights.png"
+image engine_room_red_alert = "backgrounds/engine_room_red_alert.png"
+image engine_room_right_lights = "backgrounds/engine_room_right_lights.png"
+image engine_room_spotlight = "backgrounds/engine_room_spotlight.png"
+image hallway = "backgrounds/hallway.png"
+image hallway_both_lights = "backgrounds/hallway_both_lights.png"
+image hallway_one_light = "backgrounds/hallway_one_light.png"
 
 init python:
     def create_blocks():
@@ -263,27 +273,32 @@ label start:
 
 label scene_1:
 
-    scene cryo
+    scene cryo_red_alert
 
     "A deep red light flashes through the ship, slow and steady. One by one, the cryo pods hiss open. Cold mist spills out and spreads across the floor."
     "You suck in a breath - sharp and shaky. It's the first time you've breathed in months. Around you, the others are waking too, groggy and confused."
     "Something's not right."
 
-    # (groggy, scanning control panel)
+    "You wake up groggy, and take a peek at the control panel"
+
     p "Why did the system wake us? This isn't scheduled."
 
-    # (pulls on jacket, annoyed)
+    show c
     c "That's not just an early wakeup... That's a full-system alert. Something hit critical."
+    hide c
 
-    # (frantically at terminal)
+    "The AI specialist looks frantically at the terminal"
+
     a "Ship's core is unresponsive. Emergency batteries are powering life support and nothing else. Earth is... silent."
 
-    # (looking around, tense)
+    show b
     b "Was it radiation? Collision? Something triggered an override."
+    hide b
 
     n "We're off course. Drifting. Engines are unresponsive and locked behind a sealed panel."
 
-    # (running quick vitals on the crew)
+    "The Medic runs a quick vital on the crew"
+
     m "Everyone's stable - for now. But oxygen isn't circulating correctly. We need to act fast."
 
     "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise - like metal crying out."
@@ -292,29 +307,39 @@ label scene_1:
 
     "For a moment, no one says a word."
 
+    show c
     c "Engineer. Talk to me. What can we do?"
+    hide c
 
     p "We need engine access. Until we know what state the core is in, we're flying blind."
 
     a "Access is locked. Manual override only."
 
+    show b
     b "Then let's override it."
+    hide b
 
     # TRANSITION: Going inside the engine room
+    
+    scene hallway_one_light
 
     "The crew rushes down the flickering hallway."
 
     "The floor shakes under your feet - like the ship has its own uneven heartbeat."
 
+    scene hallway_both_lights
+
     "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
 
     "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
 
-    # (focused)
+    scene hallway_one_light
+
     p "This'll take a few tries. Stay back, just in case it sparks."
 
-    # (low voice)
+    show c
     c "Just don't fry yourself."
+    hide c
 
     # MINIGAME BEGINS HERE
 
@@ -329,11 +354,15 @@ label scene_2:
 
     "The ship lets out a deep groan, like it's fighting you."
 
+    scene hallway
+
     "The lights fade... then flicker back on, brighter."
+
+    scene hallway_one_light
 
     "The door starts to open - slow and shaky."
 
-    # [Narration: Engine room is open]
+    scene engine_room_red_alert
 
     "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
 
@@ -343,23 +372,26 @@ label scene_2:
 
     "Something's not right. Really not right."
 
-    # (tense, arms crossed, watching the screen flicker)
-    c "What the hell happened while we were asleep? Where's Earth? Why aren't we getting anything?"
+    "The commander looks tense, with their arms crossed watching the screen flicker"
 
-    # (typing quickly, eyes narrowing at the console)
+    show c
+    c "What the hell happened while we were asleep? Where's Earth? Why aren't we getting anything?"
+    hide c
+
+    "The AI specialist types quickly, eyes narrowing at the console"
+
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
 
-    # (stepping closer)
     p "Can you recover it? Anything at all?"
 
     a "Bits of audio. No clear origin, no timestamp. Just a few words... and static."
-    # (beat)
+
     a "It doesn't sound like a distress call. More like... a warning. But I can't be sure."
 
-    # (gritting teeth, pacing)
+    show c
     c "So we're floating out here with a broken core, no fuel, and a half-message that might mean nothing?"
+    hide c
 
-    # (quiet but firm)
     p "It means something. Someone - or something - tried to reach us. We need to figure out what they were trying to tell us."
 
     a "I'll keep decoding. But whatever happened back home... it started before we even woke up."
