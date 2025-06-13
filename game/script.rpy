@@ -5,17 +5,20 @@
 
 define p = Character("Player")
 
-define c = Character("Commander")
+define c = Character("Commander", color="#222844")
 image c = "characters/commander.png"
 
-define a = Character("AI Specialist")
+define a = Character("AI Specialist", color="#113839")
+image a = "characters/ai_specialist.png"
 
-define b = Character("Biologist")
+define b = Character("Biologist", color="#153b25")
 image b = "characters/biologist.png"
 
-define m = Character("Medic")
+define m = Character("Medic", color="#551e21")
+image m = "characters/medic.png"
 
-define n = Character("Navigator")
+define n = Character("Navigator", color="#c0763f")
+image n = "characters/navigator.png"
 
 image cryo = "backgrounds/cryo.png"
 image cryo_red_alert = "backgrounds/cryo_red_alert.png"
@@ -27,6 +30,13 @@ image engine_room_spotlight = "backgrounds/engine_room_spotlight.png"
 image hallway = "backgrounds/hallway.png"
 image hallway_both_lights = "backgrounds/hallway_both_lights.png"
 image hallway_one_light = "backgrounds/hallway_one_light.png"
+image galaxy = "backgrounds/galaxy.png"
+
+image cryo_loop = Animation(
+    "backgrounds/cryo.png", 0.5,
+    "backgrounds/cryo_red_alert.png", 0.5,
+    repeat=True
+)
 
 init python:
     def create_blocks():
@@ -69,7 +79,7 @@ init python:
             block_sprites[-1].initial_pos = [578, 237]
             
             # Row 3
-            block_sprites.append(block_SM.create(red_block))
+            block_sprites.append(block_SM.create(move_block))
             block_sprites[-1].type = "red"
             block_sprites[-1].size = short_h_block_size
             block_sprites[-1].drag = False
@@ -242,7 +252,7 @@ screen unblock_puzzle:
 
 label solved_puzzle:
     "Puzzle completed!"
-    jump scene_2
+    jump scene_4
 
 
 # The game starts here.
@@ -254,7 +264,7 @@ label start:
     $ long_v_block = Image("minigame/long-vertical-block.png")
     $ short_h_block = Image("minigame/short-horizontal-block.png")
     $ short_v_block = Image("minigame/short-vertical-block.png")
-    $ red_block = Image("minigame/red-block.png")
+    $ move_block = Image("minigame/move-block.png")
     $ goal = Image("minigame/goal-vertical.png")
     $ long_v_block_size = (140, 452)
     $ long_h_block_size = (452, 140)
@@ -272,47 +282,160 @@ label start:
 
 label scene_1:
 
-    scene cryo_red_alert
+    scene galaxy
 
-    "A deep red light flashes through the ship, slow and steady. One by one, the cryo pods hiss open. Cold mist spills out and spreads across the floor."
-    "You suck in a breath - sharp and shaky. It's the first time you've breathed in months. Around you, the others are waking too, groggy and confused."
-    "Something's not right."
+    "Project Syntara. A classified deep-space mission, humanity's last hope hidden among the stars."
+    "You are the engineer — one of six specialists chosen for this journey."
+    "Alongside scientists, a commander, and an AI expert, you were placed in cryosleep."
+    "Your destination: Tassili, an exoplanet once used for secret biological research."
+    "You were supposed to wake up years from now."
+    "But something changed."
+    "Your cryopod hisses open early."
+    scene cryo_loop
+    "The floor is slick with mist. Red warning lights pulse across the ceiling."
+    "Alarms echo through the ship."
 
-    "You wake up groggy, and take a peek at the control panel"
+    "Something's gone wrong."
 
-    p "Why did the system wake us? This isn't scheduled."
+    menu:
+        "What happened? Why were we woken up early?":
+            jump what_happened
+
+        "Check vitals. Stay sharp — someone needs to take the lead.":
+            jump check_vitals
+
+        "Someone give me a status update. Immediately.":
+            jump status_update
+
+label what_happened:
+    "You wake up groggy, rubbing your temples."
+
+    p "Something's off. This wasn't scheduled. We weren't supposed to wake yet..."
 
     show c
-    c "That's not just an early wakeup... That's a full-system alert. Something hit critical."
+    "The commander puts on his jacket, annoyed."
+
+    c "Exactly. And that's not just an early wakeup — that's a full-system alert. Something hit critical."
     hide c
 
-    "The AI specialist looks frantically at the terminal"
+    show c at left
+    show a at right
+    "The AI Specialist is on the terminal, fingers flying over the keys"
 
-    a "Ship's core is unresponsive. Emergency batteries are powering life support and nothing else. Earth is... silent."
+    a "Ship's core is unresponsive. Emergency batteries are running the life support. Earth is... silent"
 
-    show b
-    b "Was it radiation? Collision? Something triggered an override."
-    hide b
+    hide c
+    hide a
+    jump scene_2
 
-    n "We're off course. Drifting. Engines are unresponsive and locked behind a sealed panel."
+label check_vitals:
+    p "Vitals first. Commander, what's the situation on the comms?"
 
-    "The Medic runs a quick vital on the crew"
+    "The commander glances at you, more composed than before."
 
-    m "Everyone's stable - for now. But oxygen isn't circulating correctly. We need to act fast."
+    show c at left
+    c "Smart move. But this isn't just about vitals. We've got a much bigger problem."
 
-    "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise - like metal crying out."
+    "The Medic scans the crew for their vitals"
+
+    show m at right
+    m "Everyone's stable — for now. But oxygen flow's unstable."
+
+    "The AI Specialist speaks without looking up, a look of clear concern on their face"
+
+    hide c
+    show a at left
+    a "The core's down. We're flying blind."
+
+    hide a
+    hide m
+    jump scene_2
+
+label status_update:
+    "You clear your throat"
+
+    p "Status. Right now. Who's checked the logs?"
+
+    "The commander raises an eyebrow"
+
+    show c at left
+    c "Look who's barking orders now. Fine. You want a report?"
+
+    show a at right
+    a "Ship's drifting. Core is offline. Earth isn't responding. That enough of a summary?"
+
+    hide c
+    show n at left
+    n "We're off course. Engines are locked behind a sealed panel."
+
+    hide n
+    hide a
+    jump scene_2
+
+label scene_2:
+    "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
 
     "The Syntara is drifting, and it doesn't sound good."
 
     "For a moment, no one says a word."
 
-    show c
-    c "Engineer. Talk to me. What can we do?"
-    hide c
+    menu:
+        "How bad is it?":
+            jump how_bad
 
+        "...Tell me that was just the ship settling.":
+            jump ship_settling
+
+        "This silence is worse than any alarm.":
+            jump silence
+
+label how_bad:
+    show a at left
+    a "Core's non-responsive. Life support is draining. It's bad."
+
+    "The commander looks grim as he responds"
+
+    show c at right
+    c "Real bad. We need a plan, now."
+    hide a
+    hide c
+    jump scene_3
+
+label ship_settling:
+    "The navigator looks crestfallen."
+
+    show n at left
+    n "I've flown a lot of ships. That wasn't settling."
+
+    "The Medic frowns as they run more vitals"
+    
+    show m at right
+    m "Vitals are stable… but this ship isn’t."
+    hide n
+    hide m
+    jump scene_3
+
+label silence:
+    show c at left
+    "The commander nods slowly"
+
+    c "Agreed. I've heard emergency klaxons. This is different."
+
+    show a at right
+    "The AI Specialist stares at their screen."
+
+    a "System should be reporting diagnostics. It's not."
+
+    hide c
+    hide a
+    jump scene_3
+
+label scene_3:
     p "We need engine access. Until we know what state the core is in, we're flying blind."
 
+    show a
     a "Access is locked. Manual override only."
+    hide a
 
     show b
     b "Then let's override it."
@@ -343,7 +466,7 @@ label scene_1:
     $ create_blocks()
     call screen unblock_puzzle
 
-label scene_2:
+label scene_4:
 
     "Your fingers move fast, trying to make sense of the mess."
 
@@ -379,21 +502,28 @@ label scene_2:
 
     "The AI specialist types quickly, eyes narrowing at the console"
 
+    show a
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
+    hide a
 
     p "Can you recover it? Anything at all?"
 
+    show a
     a "Bits of audio. No clear origin, no timestamp. Just a few words... and static."
+    hide a
 
+    show a at left
     a "It doesn't sound like a distress call. More like... a warning. But I can't be sure."
 
-    show c
+    show c at right
     c "So we're floating out here with a broken core, no fuel, and a half-message that might mean nothing?"
     hide c
 
     p "It means something. Someone - or something - tried to reach us. We need to figure out what they were trying to tell us."
 
     a "I'll keep decoding. But whatever happened back home... it started before we even woke up."
+    hide a
+    hide c
 
     "The room goes quiet. Just the sound of static and flickering lights."
 
