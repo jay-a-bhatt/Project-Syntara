@@ -207,12 +207,19 @@ init python:
                     block.initial_pos = [block.x, block.y]
                     break
 
+
+#disable interaction with other elements, like the quick menu.
 screen unblock_puzzle:
-    
+    modal True
+    on "show" action Hide('quick_menu')
+    on "hide" action Show('quick_menu')
     image "block_game_img/puzzle-bg.png"
     image "block_game_img/puzzle-frame.png" pos puzzle_frame_pos
     add block_SM
 
+# persistent variable to True so the puzzle is skipped next time.
 label solved_puzzle:
+    $ persistent.puzzle1_solved = True
     "Puzzle completed!"
+    $ quick_menu = True
     jump scene_4

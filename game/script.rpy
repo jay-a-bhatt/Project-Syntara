@@ -1,24 +1,33 @@
-﻿define p = Character("Player")
+﻿default persistent.puzzle1_solved = False
+define p = Character("Player", what_color="#FFD700", image="p")
+define narrator = Character(None, what_italic=True, what_color="#BEBEBE")
 
-define c = Character("Commander", color="#222844")
+define c = Character("Commander", color="#5c85d6", what_color="#c4d7f5", image="c")
+define a = Character("AI Specialist", color="#42f5b9", what_color="#d9fcf1", image="a")
+define b = Character("Biologist", color="#61c266", what_color="#d9f2da", image="b")
+define m = Character("Medic", color="#de7c7c", what_color="#f5dcdc", image="m")
+define n = Character("Navigator", color="#f2a55c", what_color="#fce9d6", image="n")
+
 image c = "characters/commander.png"
-
-define a = Character("AI Specialist", color="#113839")
 image a = "characters/ai_specialist.png"
-
-define b = Character("Biologist", color="#153b25")
 image b = "characters/biologist.png"
-
-define m = Character("Medic", color="#551e21")
 image m = "characters/medic.png"
-
-define n = Character("Navigator", color="#c0763f")
 image n = "characters/navigator.png"
+
+define narrator = Character(None, what_italic=True, what_color="#BEBEBE")
+
+# Transforms for character focus
+transform darken:
+    matrixcolor TintMatrix("#ffffff") * SaturationMatrix(1.0)
+    linear 0.5 matrixcolor TintMatrix("#4a4a4a") * SaturationMatrix(1.0)
+
+transform lighten:
+    linear 0.5 matrixcolor TintMatrix("#ffffff") * SaturationMatrix(1.0)
 
 
 # The game starts here.
 label start:
-
+    $ persistent.puzzle1_solved = False
     $ block_SM = SpriteManager(update = blocks_update, event = blocks_events)
     $ block_sprites = []
     $ long_h_block = Image("block_game_img/long-horizontal-block.png")
@@ -48,21 +57,19 @@ label scene_1:
 
     scene galaxy
 
-    "Project Syntara. A classified deep-space mission, humanity's last hope hidden among the stars."
-    "You are the engineer — one of six specialists chosen for this journey."
-    "Alongside scientists, a commander, and an AI expert, you were placed in cryosleep."
-    "Your destination: Tassili, an exoplanet once used for secret biological research."
-    "You were supposed to wake up years from now."
-    "But something changed."
-    "Your cryopod hisses open early."
-    call screen connect_the_pipes
+    narrator "Project Syntara. A classified deep-space mission, humanity's last hope hidden among the stars."
+    narrator "You are the engineer — one of six specialists chosen for this journey."
+    narrator "Alongside scientists, a commander, and an AI expert, you were placed in cryosleep."
+    narrator "Your destination: Tassili, an exoplanet once used for secret biological research."
+    narrator "You were supposed to wake up years from now."
+    narrator "But something changed."
+    narrator "Your cryopod hisses open early."
+
     scene cryo_loop
-    "The floor is slick with mist. Red warning lights pulse across the ceiling."
-    "Alarms echo through the ship."
+    narrator "The floor is slick with mist. Red warning lights pulse across the ceiling."
+    narrator "Alarms echo through the ship."
 
-    "Something's gone wrong."
-
-    # call screen connect_the_pipes
+    narrator "Something's gone wrong."
 
     menu:
         "What happened? Why were we woken up early?":
@@ -75,19 +82,19 @@ label scene_1:
             jump status_update
 
 label what_happened:
-    "You wake up groggy, rubbing your temples."
+    narrator "You wake up groggy, rubbing your temples."
 
     p "Something's off. This wasn't scheduled. We weren't supposed to wake yet..."
-
+    call screen connect_the_pipes # this can be changed to anywhere in the code
     show c
-    "The commander puts on his jacket, annoyed."
+    narrator "The commander puts on his jacket, annoyed."
 
     c "Exactly. And that's not just an early wakeup — that's a full-system alert. Something hit critical."
     hide c
 
-    show c at left
+    show c at left, darken
     show a at right
-    "The AI Specialist is on the terminal, fingers flying over the keys"
+    narrator "The AI Specialist is on the terminal, fingers flying over the keys"
 
     a "Ship's core is unresponsive. Emergency batteries are running the life support. Earth is... silent"
 
@@ -98,19 +105,21 @@ label what_happened:
 label check_vitals:
     p "Vitals first. Commander, what's the situation on the comms?"
 
-    "The commander glances at you, more composed than before."
+    narrator "The commander glances at you, more composed than before."
 
     show c at left
     c "Smart move. But this isn't just about vitals. We've got a much bigger problem."
 
-    "The Medic scans the crew for their vitals"
+    narrator "The Medic scans the crew for their vitals"
 
+    show c at left, darken
     show m at right
     m "Everyone's stable — for now. But oxygen flow's unstable."
 
-    "The AI Specialist speaks without looking up, a look of clear concern on their face"
+    narrator "The AI Specialist speaks without looking up, a look of clear concern on their face"
 
     hide c
+    show m at right, darken
     show a at left
     a "The core's down. We're flying blind."
 
@@ -119,19 +128,21 @@ label check_vitals:
     jump scene_2
 
 label status_update:
-    "You clear your throat"
+    narrator "You clear your throat"
 
     p "Status. Right now. Who's checked the logs?"
 
-    "The commander raises an eyebrow"
+    narrator "The commander raises an eyebrow"
 
     show c at left
     c "Look who's barking orders now. Fine. You want a report?"
 
+    show c at left, darken
     show a at right
     a "Ship's drifting. Core is offline. Earth isn't responding. That enough of a summary?"
 
     hide c
+    show a at right, darken
     show n at left
     n "We're off course. Engines are locked behind a sealed panel."
 
@@ -140,11 +151,11 @@ label status_update:
     jump scene_2
 
 label scene_2:
-    "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
+    narrator "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
 
-    "The Syntara is drifting, and it doesn't sound good."
+    narrator "The Syntara is drifting, and it doesn't sound good."
 
-    "For a moment, no one says a word."
+    narrator "For a moment, no one says a word."
 
     menu:
         "How bad is it?":
@@ -160,8 +171,9 @@ label how_bad:
     show a at left
     a "Core's non-responsive. Life support is draining. It's bad."
 
-    "The commander looks grim as he responds"
+    narrator "The commander looks grim as he responds"
 
+    show a at left, darken
     show c at right
     c "Real bad. We need a plan, now."
     hide a
@@ -169,13 +181,14 @@ label how_bad:
     jump scene_3
 
 label ship_settling:
-    "The navigator looks crestfallen."
+    narrator "The navigator looks crestfallen."
 
     show n at left
     n "I've flown a lot of ships. That wasn't settling."
 
-    "The Medic frowns as they run more vitals"
-    
+    narrator "The Medic frowns as they run more vitals"
+
+    show n at left, darken
     show m at right
     m "Vitals are stable… but this ship isn’t."
     hide n
@@ -184,13 +197,14 @@ label ship_settling:
 
 label silence:
     show c at left
-    "The commander nods slowly"
+    narrator "The commander nods slowly"
 
     c "Agreed. I've heard emergency klaxons. This is different."
 
-    show a at right
-    "The AI Specialist stares at their screen."
+    narrator "The AI Specialist stares at their screen."
 
+    show c at left, darken
+    show a at right
     a "System should be reporting diagnostics. It's not."
 
     hide c
@@ -208,19 +222,17 @@ label scene_3:
     b "Then let's override it."
     hide b
 
-    # TRANSITION: Going inside the engine room
-    
     scene hallway_one_light
 
-    "The crew rushes down the flickering hallway."
+    narrator "The crew rushes down the flickering hallway."
 
-    "The floor shakes under your feet - like the ship has its own uneven heartbeat."
+    narrator "The floor shakes under your feet - like the ship has its own uneven heartbeat."
 
     scene hallway_both_lights
 
-    "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
+    narrator "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
 
-    "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
+    narrator "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
 
     p "This'll take a few tries. Stay back, just in case it sparks."
 
@@ -228,46 +240,51 @@ label scene_3:
     c "Just don't fry yourself."
     hide c
 
-    # block_game_img BEGINS HERE
-
-    $ create_blocks()
-    call screen unblock_puzzle
+    # Check if the puzzle was already solved.
+    if persistent.puzzle1_solved:
+        narrator "The wiring looks familiar. You quickly bypass the lock."
+        jump scene_4
+    else:
+        $ quick_menu = False
+        # If not solved, create the blocks and call the puzzle screen.
+        $ create_blocks()
+        call screen unblock_puzzle
 
 label scene_4:
 
-    "Your fingers move fast, trying to make sense of the mess."
+    narrator "Your fingers move fast, trying to make sense of the mess."
 
-    "Sparks fly as you twist the wires into place, one after another."
+    narrator "Sparks fly as you twist the wires into place, one after another."
 
     scene hallway_one_light
 
-    "The ship lets out a deep groan, like it's fighting you."
+    narrator "The ship lets out a deep groan, like it's fighting you."
 
     scene hallway
 
-    "The lights fade... then flicker back on, brighter."
+    narrator "The lights fade... then flicker back on, brighter."
 
     scene hallway_both_lights
 
-    "The door starts to open - slow and shaky."
+    narrator "The door starts to open - slow and shaky."
 
     scene engine_room_red_alert
 
-    "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
+    narrator "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
 
-    "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
+    narrator "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
 
-    "You take a step in. The system starts to boot up... then stops."
+    narrator "You take a step in. The system starts to boot up... then stops."
 
-    "Something's not right. Really not right."
+    narrator "Something's not right. Really not right."
 
-    "The commander looks tense, with their arms crossed watching the screen flicker"
+    narrator "The commander looks tense, with their arms crossed watching the screen flicker"
 
     show c
     c "What the hell happened while we were asleep? Where's Earth? Why aren't we getting anything?"
     hide c
 
-    "The AI specialist types quickly, eyes narrowing at the console"
+    narrator "The AI specialist types quickly, eyes narrowing at the console"
 
     show a
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
@@ -282,21 +299,22 @@ label scene_4:
     show a at left
     a "It doesn't sound like a distress call. More like... a warning. But I can't be sure."
 
+    show a at left, darken
     show c at right
     c "So we're floating out here with a broken core, no fuel, and a half-message that might mean nothing?"
-    hide c
 
+    show c at right, darken
     p "It means something. Someone - or something - tried to reach us. We need to figure out what they were trying to tell us."
 
+    show a at left, lighten
     a "I'll keep decoding. But whatever happened back home... it started before we even woke up."
     hide a
     hide c
 
-    "The room goes quiet. Just the sound of static and flickering lights."
+    narrator "The room goes quiet. Just the sound of static and flickering lights."
 
-    "No one speaks, but the fear is there - heavy and real."
+    narrator "No one speaks, but the fear is there - heavy and real."
 
-    "Whatever happened to Earth... already started."
+    narrator "Whatever happened to Earth... already started."
 
-    # This ends the game
     return
