@@ -8,24 +8,6 @@ define b = Character("Biologist", color="#61c266", what_color="#d9f2da", image="
 define m = Character("Medic", color="#de7c7c", what_color="#f5dcdc", image="m")
 define n = Character("Navigator", color="#f2a55c", what_color="#fce9d6", image="n")
 
-image c = "characters/commander.png"
-image a = "characters/ai_specialist.png"
-image b = "characters/biologist.png"
-image m = "characters/medic.png"
-image n = "characters/navigator.png"
-
-define narrator = Character(None, what_italic=True, what_color="#BEBEBE")
-
-# Transforms for character focus
-transform darken:
-    matrixcolor TintMatrix("#ffffff") * SaturationMatrix(1.0)
-    linear 0.5 matrixcolor TintMatrix("#4a4a4a") * SaturationMatrix(1.0)
-
-transform lighten:
-    linear 0.5 matrixcolor TintMatrix("#ffffff") * SaturationMatrix(1.0)
-
-
-# The game starts here.
 label start:
     $ persistent.puzzle1_solved = False
     $ block_SM = SpriteManager(update = blocks_update, event = blocks_events)
@@ -47,28 +29,26 @@ label start:
 
     $ setup_pipe_game()
 
-
     jump scene_1
 
-    # This ends the game
+label end_game:
     return
 
 label scene_1:
-
-    scene galaxy
-
+    scene galaxy with fade
     narrator "Project Syntara. A classified deep-space mission, humanity's last hope hidden among the stars."
     narrator "You are the engineer — one of six specialists chosen for this journey."
     narrator "Alongside scientists, a commander, and an AI expert, you were placed in cryosleep."
     narrator "Your destination: Tassili, an exoplanet once used for secret biological research."
     narrator "You were supposed to wake up years from now."
     narrator "But something changed."
+
+    scene cryo with dissolve
     narrator "Your cryopod hisses open early."
 
-    scene cryo_loop
+    scene cryo_loop with dissolve
     narrator "The floor is slick with mist. Red warning lights pulse across the ceiling."
     narrator "Alarms echo through the ship."
-
     narrator "Something's gone wrong."
 
     menu:
@@ -83,78 +63,67 @@ label scene_1:
 
 label what_happened:
     narrator "You wake up groggy, rubbing your temples."
-
     p "Something's off. This wasn't scheduled. We weren't supposed to wake yet..."
-    call screen connect_the_pipes # this can be changed to anywhere in the code
-    show c
+
+    show c at right with dissolve
     narrator "The commander puts on his jacket, annoyed."
-
     c "Exactly. And that's not just an early wakeup — that's a full-system alert. Something hit critical."
-    hide c
 
-    show c at left, darken
-    show a at right
+    show c at right, darken
+    show a at left with dissolve
     narrator "The AI Specialist is on the terminal, fingers flying over the keys"
-
     a "Ship's core is unresponsive. Emergency batteries are running the life support. Earth is... silent"
 
-    hide c
-    hide a
+    hide c with dissolve
+    hide a with dissolve
     jump scene_2
 
 label check_vitals:
     p "Vitals first. Commander, what's the situation on the comms?"
-
+    show c at left with dissolve
     narrator "The commander glances at you, more composed than before."
-
-    show c at left
     c "Smart move. But this isn't just about vitals. We've got a much bigger problem."
 
-    narrator "The Medic scans the crew for their vitals"
-
     show c at left, darken
-    show m at right
+    show m at right with dissolve
+    narrator "The Medic scans the crew for their vitals"
     m "Everyone's stable — for now. But oxygen flow's unstable."
-
-    narrator "The AI Specialist speaks without looking up, a look of clear concern on their face"
-
-    hide c
+    
     show m at right, darken
-    show a at left
+    show a at center with dissolve
+    narrator "The AI Specialist speaks without looking up, a look of clear concern on their face"
     a "The core's down. We're flying blind."
 
-    hide a
-    hide m
+    hide c with dissolve
+    hide m with dissolve
+    hide a with dissolve
     jump scene_2
 
 label status_update:
     narrator "You clear your throat"
-
     p "Status. Right now. Who's checked the logs?"
 
+    show c at left with dissolve
     narrator "The commander raises an eyebrow"
-
-    show c at left
     c "Look who's barking orders now. Fine. You want a report?"
 
     show c at left, darken
-    show a at right
+    show a at right with dissolve
     a "Ship's drifting. Core is offline. Earth isn't responding. That enough of a summary?"
-
-    hide c
+    
     show a at right, darken
-    show n at left
+    show n at center with dissolve
     n "We're off course. Engines are locked behind a sealed panel."
 
-    hide n
-    hide a
+    hide c with dissolve
+    hide a with dissolve
+    hide n with dissolve
     jump scene_2
 
 label scene_2:
+    with hpunch
     narrator "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
-
     narrator "The Syntara is drifting, and it doesn't sound good."
-
     narrator "For a moment, no one says a word."
 
     menu:
@@ -168,153 +137,306 @@ label scene_2:
             jump silence
 
 label how_bad:
-    show a at left
+    show a at left with dissolve
     a "Core's non-responsive. Life support is draining. It's bad."
 
-    narrator "The commander looks grim as he responds"
-
     show a at left, darken
-    show c at right
+    show c at right with dissolve
+    narrator "The commander looks grim as he responds"
     c "Real bad. We need a plan, now."
-    hide a
-    hide c
+
+    hide a with dissolve
+    hide c with dissolve
     jump scene_3
 
 label ship_settling:
+    show n at left with dissolve
     narrator "The navigator looks crestfallen."
-
-    show n at left
     n "I've flown a lot of ships. That wasn't settling."
 
-    narrator "The Medic frowns as they run more vitals"
-
     show n at left, darken
-    show m at right
-    m "Vitals are stable… but this ship isn’t."
-    hide n
-    hide m
+    show m at right with dissolve
+    narrator "The Medic frowns as they run more vitals"
+    m "Vitals are stable… but this ship isn't."
+
+    hide n with dissolve
+    hide m with dissolve
     jump scene_3
 
 label silence:
-    show c at left
+    show c at left with dissolve
     narrator "The commander nods slowly"
-
     c "Agreed. I've heard emergency klaxons. This is different."
 
-    narrator "The AI Specialist stares at their screen."
-
     show c at left, darken
-    show a at right
+    show a at right with dissolve
+    narrator "The AI Specialist stares at their screen."
     a "System should be reporting diagnostics. It's not."
 
-    hide c
-    hide a
+    hide c with dissolve
+    hide a with dissolve
     jump scene_3
 
 label scene_3:
     p "We need engine access. Until we know what state the core is in, we're flying blind."
-
-    show a
+    
+    show a at left with dissolve
     a "Access is locked. Manual override only."
-    hide a
+    show a at left, darken
 
-    show b
+    show b at right with dissolve
     b "Then let's override it."
-    hide b
+    hide b with dissolve
+    hide a with dissolve
 
-    scene hallway_one_light
-
+    scene hallway_one_light with fade
     narrator "The crew rushes down the flickering hallway."
-
+    with vpunch
     narrator "The floor shakes under your feet - like the ship has its own uneven heartbeat."
-
-    scene hallway_both_lights
-
+    scene hallway_both_lights with dissolve
     narrator "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
-
     narrator "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
-
     p "This'll take a few tries. Stay back, just in case it sparks."
-
-    show c
+    
+    show c at center with dissolve
     c "Just don't fry yourself."
-    hide c
+    hide c with dissolve
 
-    # Check if the puzzle was already solved.
     if persistent.puzzle1_solved:
         narrator "The wiring looks familiar. You quickly bypass the lock."
-        jump scene_4
     else:
         $ quick_menu = False
-        # If not solved, create the blocks and call the puzzle screen.
         $ create_blocks()
         call screen unblock_puzzle
+    jump scene_4
 
 label scene_4:
-
     narrator "Your fingers move fast, trying to make sense of the mess."
-
     narrator "Sparks fly as you twist the wires into place, one after another."
-
-    scene hallway_one_light
-
+    scene hallway_one_light with dissolve
     narrator "The ship lets out a deep groan, like it's fighting you."
-
-    scene hallway
-
+    scene hallway with fade
     narrator "The lights fade... then flicker back on, brighter."
-
-    scene hallway_both_lights
-
+    scene hallway_both_lights with dissolve
     narrator "The door starts to open - slow and shaky."
 
-    scene engine_room_red_alert
-
+    scene engine_room_loop with fade
     narrator "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
-
     narrator "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
-
     narrator "You take a step in. The system starts to boot up... then stops."
-
     narrator "Something's not right. Really not right."
 
+    show c at left with dissolve
     narrator "The commander looks tense, with their arms crossed watching the screen flicker"
-
-    show c
     c "What the hell happened while we were asleep? Where's Earth? Why aren't we getting anything?"
-    hide c
 
+    show c at left, darken
+    show a at right with dissolve
     narrator "The AI specialist types quickly, eyes narrowing at the console"
-
-    show a
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
-    hide a
 
     p "Can you recover it? Anything at all?"
 
-    show a
     a "Bits of audio. No clear origin, no timestamp. Just a few words... and static."
-    hide a
-
-    show a at left
     a "It doesn't sound like a distress call. More like... a warning. But I can't be sure."
 
-    show a at left, darken
-    show c at right
+    show a at right, darken
+    show c at left, lighten
     c "So we're floating out here with a broken core, no fuel, and a half-message that might mean nothing?"
 
-    show c at right, darken
     p "It means something. Someone - or something - tried to reach us. We need to figure out what they were trying to tell us."
 
-    show a at left, lighten
+    show c at left, darken
+    show a at right, lighten
     a "I'll keep decoding. But whatever happened back home... it started before we even woke up."
-    hide a
-    hide c
+    
+    hide a with dissolve
+    hide c with dissolve
 
     narrator "The room goes quiet. Just the sound of static and flickering lights."
-
     narrator "No one speaks, but the fear is there - heavy and real."
-
     narrator "Whatever happened to Earth... already started."
+    jump scene_5
 
-    return
+label scene_5:
+    narrator "The console hums to life, flickering erratically."
+    narrator "A garbled message scrolls across the display, fractured and incomplete."
+    narrator ">> INCOMING MESSAGE: DATA CORRUPTED 97%"
+    narrator "> T_//S?L| :: P*_T_C_L B_R_K_N"
+    narrator "> *_ST## ##A___"
+    narrator "> S?G_L L_ST"
+    narrator "The screen glitches, the words jittering for a moment before fading back to static."
+    narrator "The room fills with the low hum of failing systems. The air feels heavy, electric."
+
+    show b at left with dissolve
+    show b at left, lighten
+    show a at right with dissolve
+    show a at right, darken
+    narrator "The Biologist strains to read the screen."
+    b "I see... T-something... Tassili? Protocol? It's broken. Maybe. The rest I can't tell."
+
+    show b at left, darken
+    show a at right, lighten
+    narrator "The AI Specialist leans closer, typing."
+    a "Whatever this was, it's shredded. We're guessing unless we decrypt more."
+
+    show a at right, darken
+    show c at center with dissolve
+    c "And we're supposed to decide what to do next based on {i}that{/i}?"
+
+    hide b with dissolve
+    hide a with dissolve
+    hide c with dissolve
+
+    p "We can't ignore it. Whatever that was, someone tried to leave it for us."
+
+    menu:
+        "Prioritize decrypting the message further.":
+            jump prioritize_decrypting
+        "Focus on restoring ship power first.":
+            jump focus_power
+        "Recommend scanning for external threats.":
+            jump scan_threats
+
+label prioritize_decrypting:
+    p "If there's more buried in that signal, we need it now. That message could save our lives."
+    show a at center with dissolve
+    a "Agreed. But the decryption matrix is damaged. We'll have to rebuild the circuit grid."
+    hide a with dissolve
+    jump decrypt_minigame
+
+label focus_power:
+    p "Power first. If the core fails, we won't be around to care about signals."
+    show c at center with dissolve
+    c "Good. Let's not die chasing ghosts."
+    hide c with dissolve
+    narrator "You reroute power. The lights steady... for a moment."
+    narrator "Then, the console beeps. The cryptic message flashes again, glitching worse than before."
+    show a at center with dissolve
+    a "Stabilizing power gave us one shot. If we don't decode this now, we'll lose it for good."
+    hide a with dissolve
+    jump decrypt_minigame
+
+label scan_threats:
+    p "We should know if something's out there before worrying about old messages."
+    show n at left with dissolve
+    n "Trying to bring scanners online... but power's too unstable. All I'm getting is noise."
+    
+    show n at left, darken
+    show a at right with dissolve
+    a "Meanwhile, that message's degrading. We either crack it now or it's gone."
+    
+    hide n with dissolve
+    hide a with dissolve
+    jump decrypt_minigame
+
+label decrypt_minigame:
+    narrator "Your hands move over the console's tangled internals. Pipe-like conduits for the signal matrix. Every wrong connection bleeds power. Every right one brings the message closer to clarity."
+    call screen connect_the_pipes
+    jump message_results
+
+label message_results:
+    narrator "Your fingers fly across the console. Connections spark. The matrix stabilizes."
+    narrator "The console flickers, then steadies. The decrypted message scrolls slowly across the screen:"
+    narrator ">> INCOMING MESSAGE [[PARTIAL DECRYPTION SUCCESSFUL]]"
+    narrator "> TASSILI NOT SAFE"
+    narrator "> PROTOCOL BROKEN"
+    narrator "> NOT ALONE"
+    narrator "> DO NOT APPROACH"
+    narrator "> SIGNAL ENDS"
+    jump scene_6
+
+label scene_6:
+    show c at center with dissolve
+    c "That's it? A warning? And we're supposed to trust this?"
+
+    show c at center, darken
+    show b at left with dissolve
+    narrator "The Biologist is frowning, thinking hard."
+    b "Not alone. What did they mean? Could it be the animals? Or... someone else?"
+
+    show b at left, darken
+    show a at right with dissolve
+    a "It's clearer, but still not enough to know what's really waiting down there."
+    
+    hide b with dissolve
+    hide a with dissolve
+    hide c with dissolve
+
+    with hpunch
+    narrator "The ship groans again, deeper this time. The emergency lights pulse faster."
+    narrator "The console's warning tones grow louder. Fuel reserves: critical."
+    narrator "Your next move could mean survival... or sealing your fate."
+    jump scene_7
+
+label scene_7:
+    narrator "The crew looks to you."
+    show c at right with dissolve
+    c "So we throw what's left of our fuel at a planet we were just told to avoid?"
+
+    show c at right, darken
+    show b at left with dissolve
+    b "If the Viculli survived down there, so can we. That's where the cure is. This isn't a warning, it's fear, recorded by whoever sent it."
+
+    show b at left, darken
+    show a at center with dissolve
+    a "Orbit's slipping. Fuel's nearly gone. We land, or we die up here."
+
+    hide a with dissolve
+    hide b with dissolve
+    hide c with dissolve
+
+    menu:
+        "LAND ON THE PLANET":
+            jump land_on_planet
+        "STAY IN ORBIT AND ATTEMPT CONTACT":
+            jump stay_in_orbit
+        "PREPARE FOR RETURN TO EARTH":
+            jump return_to_earth
+
+label land_on_planet:
+    p "We came for a reason. Let's finish what we started."
+    show c at center with dissolve
+    c "Strap in. We do this together."
+    hide c with dissolve
+    jump converge_ending
+
+label stay_in_orbit:
+    p "Let's try the communications array one more time. Maybe Earth can help."
+    show a at right with dissolve
+    a "Power's too unstable. We're losing altitude even as we talk."
+    
+    show a at right, darken
+    show c at left with dissolve
+    c "Communications array isn't responding. Power reroutes are failing. We're on a glide path to Tassili, like it or not."
+    
+    hide a with dissolve
+    hide c with dissolve
+    jump converge_ending
+
+label return_to_earth:
+    p "We try for Earth. Maybe we can still make it home."
+    show b at left with dissolve
+    b "We won't. Not on what we've got left."
+    
+    show b at left, darken
+    show a at right with dissolve
+    a "Confirmed. Even on minimal power, we'd burn out before clearing Tassili's orbit. There's not enough to break free."
+    
+    hide b with dissolve
+    hide a with dissolve
+    show c at center with dissolve
+    c "Then we land. It's the only shot we've got left."
+    hide c with dissolve
+    jump converge_ending
+
+label converge_ending:
+    scene black with fade
+    narrator "The crew shares a final look, their faces etched with determination, fear, and resignation."
+    scene engine_room with dissolve
+    narrator "The navigator grips the controls, guiding the ship on its final descent."
+    with hpunch
+    narrator "The engines shudder as they ignite, the hull trembling under the last desperate burn of fuel."
+    narrator "The planet fills the viewport, scarred, silent, waiting."
+    narrator "Whatever waits below... you're committed now."
+    jump end_game
