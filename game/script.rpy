@@ -261,7 +261,7 @@ label scene_4:
 label scene_5:
     narrator "The console hums to life, flickering erratically."
     narrator "A garbled message scrolls across the display, fractured and incomplete."
-    narrator "> INCOMING MESSAGE: DATA CORRUPTED 97 PERCENT"
+    narrator ">> INCOMING MESSAGE: [[DATA CORRUPTED 97%%]"
     narrator "> T_//S?L| :: P*_T_C_L B_R_K_N"
     narrator "> *_ST## ##A___"
     narrator "> S?G_L L_ST"
@@ -338,7 +338,7 @@ label decrypt_minigame:
 label message_results:
     narrator "Your fingers fly across the console. Connections spark. The matrix stabilizes."
     narrator "The console flickers, then steadies. The decrypted message scrolls slowly across the screen:"
-    narrator ">> INCOMING MESSAGE [[PARTIAL DECRYPTION SUCCESSFUL]]"
+    narrator ">> INCOMING MESSAGE [[PARTIAL DECRYPTION SUCCESSFUL]"
     narrator "> TASSILI NOT SAFE"
     narrator "> PROTOCOL BROKEN"
     narrator "> NOT ALONE"
