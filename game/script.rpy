@@ -128,9 +128,7 @@ label status_update:
 label scene_2:
     with hpunch
     play music alarm volume 0.1 loop
-    play sound squeaky_metal_short
-    pause 5.0
-    stop squeaky_metal_short
+    play sound "<from 0 to 5>audio/dialogue_2/squeaky_metal_short.flac"
     narrator "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
     narrator "The Syntara is drifting, and it doesn't sound good."
     narrator "For a moment, no one says a word."
@@ -203,7 +201,7 @@ label scene_3:
     scene hallway_loop with fade
     narrator "The crew rushes down the flickering hallway."
     with vpunch
-    #play sound "<from 0 to 5>lights_flicker_and_hum.wav"
+    play sound "<from 0 to 5>audio/dialogue_2/lights_flicker_and_hum.flac"
     narrator "The floor shakes under your feet - like the ship has its own uneven heartbeat."
     narrator "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
     play sound crackling_sparks_flying
@@ -246,6 +244,7 @@ label scene_4:
     play music choice_screen_selection_with_beats_tense loop volume 0.3
     play sound longer_cryo_hiss_1 volume 0.1
     narrator "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
+    scene hallway_loop
     narrator "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
     narrator "You take a step in. The system starts to boot up... then stops."
     scene control_panel_blank
