@@ -36,6 +36,7 @@ label end_game:
 
 label scene_1:
     scene galaxy with fade
+    play music loading_music if_changed loop
     narrator "Project Syntara. A classified deep-space mission, humanity's last hope hidden among the stars."
     narrator "You are the engineer — one of six specialists chosen for this journey."
     narrator "Alongside scientists, a commander, and an AI expert, you were placed in cryosleep."
@@ -44,14 +45,18 @@ label scene_1:
     narrator "But something changed."
 
     scene cryo with dissolve
+    play sound cryo_chamber_hiss_short volume 0.4
     narrator "Your cryopod hisses open early."
 
     scene cryo_loop with dissolve
+    play music alarm volume 0.1 loop
     narrator "The floor is slick with mist. Red warning lights pulse across the ceiling."
     narrator "Alarms echo through the ship."
     narrator "Something's gone wrong."
 
     menu:
+        "Choose one option"
+
         "What happened? Why were we woken up early?":
             jump what_happened
 
@@ -122,11 +127,17 @@ label status_update:
 
 label scene_2:
     with hpunch
+    play music alarm volume 0.1 loop
+    play sound squeaky_metal_short
+    pause 5.0
+    stop squeaky_metal_short
     narrator "The lights flicker. One hallway goes dark completely. Somewhere below, the ship lets out a low, grinding noise — like metal crying out."
     narrator "The Syntara is drifting, and it doesn't sound good."
     narrator "For a moment, no one says a word."
 
     menu:
+        "Choose one option"
+
         "How bad is it?":
             jump how_bad
 
@@ -189,18 +200,21 @@ label scene_3:
     hide b with dissolve
     hide a with dissolve
 
-    scene hallway_one_light with fade
+    scene hallway_loop with fade
     narrator "The crew rushes down the flickering hallway."
     with vpunch
+    #play sound "<from 0 to 5>lights_flicker_and_hum.wav"
     narrator "The floor shakes under your feet - like the ship has its own uneven heartbeat."
-    scene hallway_both_lights with dissolve
     narrator "You stop at the sealed engine room door. Next to it, a console blinks with a dull green light."
+    play sound crackling_sparks_flying
     narrator "The manual override is open. Wires are frayed and burnt. You kneel down. Your hands are shaking - both from fear and from the cold."
     p "This'll take a few tries. Stay back, just in case it sparks."
     
     show c at center with dissolve
     c "Just don't fry yourself."
     hide c with dissolve
+
+    stop sound
 
     if persistent.puzzle1_solved:
         narrator "The wiring looks familiar. You quickly bypass the lock."
@@ -211,16 +225,26 @@ label scene_3:
     jump scene_4
 
 label scene_4:
+    play music alarm volume 0.1 if_changed
     narrator "Your fingers move fast, trying to make sense of the mess."
     narrator "Sparks fly as you twist the wires into place, one after another."
+    play sound "<from 0 to 5>audio/dialogue_2/squeaky_metal_long.wav" volume 0.5
     scene hallway_one_light with dissolve
     narrator "The ship lets out a deep groan, like it's fighting you."
     scene hallway with fade
+    stop music
+    play music space_craft_ambient_background 
+    play sound lights_flicker_and_hum
     narrator "The lights fade... then flicker back on, brighter."
     scene hallway_both_lights with dissolve
+    stop sound
+    play sound "<from 8 to 10>audio/dialogue_3/loud_metal_screech_door.wav" volume 0.05
     narrator "The door starts to open - slow and shaky."
 
     scene engine_room_loop with fade
+    stop music
+    play music choice_screen_selection_with_beats_tense loop volume 0.3
+    play sound longer_cryo_hiss_1 volume 0.1
     narrator "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
     narrator "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
     narrator "You take a step in. The system starts to boot up... then stops."
@@ -233,6 +257,7 @@ label scene_4:
     show c at left, darken
     show a at right with dissolve
     narrator "The AI specialist types quickly, eyes narrowing at the console"
+    play sound static_radio_transmission loop volume 0.3
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
 
     p "Can you recover it? Anything at all?"
@@ -256,15 +281,18 @@ label scene_4:
     narrator "The room goes quiet. Just the sound of static and flickering lights."
     narrator "No one speaks, but the fear is there - heavy and real."
     narrator "Whatever happened to Earth... already started."
+    stop sound
     jump scene_5
 
 label scene_5:
+    play sound engine_boots_up volume 0.1
     narrator "The console hums to life, flickering erratically."
     narrator "A garbled message scrolls across the display, fractured and incomplete."
     narrator ">> INCOMING MESSAGE: [[DATA CORRUPTED 97%%]"
     narrator "> T_//S?L| :: P*_T_C_L B_R_K_N"
     narrator "> *_ST## ##A___"
     narrator "> S?G_L L_ST"
+    play sound static_radio_transmission loop volume 0.3
     narrator "The screen glitches, the words jittering for a moment before fading back to static."
     narrator "The room fills with the low hum of failing systems. The air feels heavy, electric."
 
@@ -289,6 +317,8 @@ label scene_5:
     hide c with dissolve
 
     p "We can't ignore it. Whatever that was, someone tried to leave it for us."
+
+    stop sound
 
     menu:
         "Prioritize decrypting the message further.":
@@ -332,11 +362,18 @@ label scan_threats:
 
 label decrypt_minigame:
     narrator "Your hands move over the console's tangled internals. Pipe-like conduits for the signal matrix. Every wrong connection bleeds power. Every right one brings the message closer to clarity."
+    stop music
+    stop sound
+    play music alarm volume 0.1 if_changed
+    play sound crackling_sparks_flying volume 1 loop
     call screen connect_the_pipes
     jump message_results
 
 label message_results:
     narrator "Your fingers fly across the console. Connections spark. The matrix stabilizes."
+    stop music
+    play music choice_screen_selection_with_beats_tense loop volume 0.2
+    play sound engine_boots_up volume 0.1
     narrator "The console flickers, then steadies. The decrypted message scrolls slowly across the screen:"
     narrator ">> INCOMING MESSAGE [[PARTIAL DECRYPTION SUCCESSFUL]"
     narrator "> TASSILI NOT SAFE"
@@ -364,6 +401,7 @@ label scene_6:
     hide c with dissolve
 
     with hpunch
+    play sound "<from 0 to 7>audio/dialogue_6/long_loud_squeaky_metal.wav" volume 0.2
     narrator "The ship groans again, deeper this time. The emergency lights pulse faster."
     narrator "The console's warning tones grow louder. Fuel reserves: critical."
     narrator "Your next move could mean survival... or sealing your fate."
@@ -386,12 +424,19 @@ label scene_7:
     hide b with dissolve
     hide c with dissolve
 
+    play music choice_screen_selection_with_beats_tense loop volume 0.3 if_changed
+
     menu:
+        "Choose one option"
+
         "LAND ON THE PLANET":
+            stop music
             jump land_on_planet
         "STAY IN ORBIT AND ATTEMPT CONTACT":
+            stop music
             jump stay_in_orbit
         "PREPARE FOR RETURN TO EARTH":
+            stop music
             jump return_to_earth
 
 label land_on_planet:
@@ -432,6 +477,9 @@ label return_to_earth:
 
 label converge_ending:
     scene black with fade
+    stop music
+    play music loading_music loop
+    play sound choice_screen_selection_with_beats_tense loop volume 0.1
     narrator "The crew shares a final look, their faces etched with determination, fear, and resignation."
     scene engine_room with dissolve
     narrator "The navigator grips the controls, guiding the ship on its final descent."

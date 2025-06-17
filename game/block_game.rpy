@@ -182,16 +182,16 @@ init python:
                     # current_puzzle = 2
                     renpy.jump("solved_puzzle")
                     return None
-        
         return 0
 
     def blocks_events(event, x, y, st):
         global click_pos
-        
+
         if event.type == renpy.pygame_sdl2.MOUSEBUTTONDOWN:
             # Mouse button is down.
             if event.button == 1:
                 # The left mouse button is down.
+                renpy.sound.play("<from 0 to 2>audio/block_game/item_slide.wav")
                 for block in block_sprites:
                     if block.type != "goal" and block.x < x < block.x + block.size[0] and block.y < y < block.y + block.size[1]:
                         # Mouse is overlapping this block and the button is pressed down.
