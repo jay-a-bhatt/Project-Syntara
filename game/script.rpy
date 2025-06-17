@@ -240,14 +240,15 @@ label scene_4:
     stop sound
     play sound "<from 8 to 10>audio/dialogue_3/loud_metal_screech_door.wav" volume 0.05
     narrator "The door starts to open - slow and shaky."
+    scene hallway_door with dissolve
 
-    scene engine_room_loop with fade
     stop music
     play music choice_screen_selection_with_beats_tense loop volume 0.3
     play sound longer_cryo_hiss_1 volume 0.1
     narrator "With a loud, grinding screech, the doors slide open. A wave of hot, metallic air hits your face."
     narrator "Inside, it's a mess - wires hanging down, fuses blown, everything flickering and half-dead. The control panel glows weakly at the far end. You smell burnt plastic."
     narrator "You take a step in. The system starts to boot up... then stops."
+    scene control_panel_blank
     narrator "Something's not right. Really not right."
 
     show c at left with dissolve
@@ -256,6 +257,7 @@ label scene_4:
 
     show c at left, darken
     show a at right with dissolve
+    scene control_panel_no_connection
     narrator "The AI specialist types quickly, eyes narrowing at the console"
     play sound static_radio_transmission loop volume 0.3
     a "There was something. A signal buried in the logs. It's... damaged. Corrupted maybe."
@@ -286,8 +288,11 @@ label scene_4:
 
 label scene_5:
     play sound engine_boots_up volume 0.1
+    scene control_panel_alert_loop
     narrator "The console hums to life, flickering erratically."
+    scene control_panel_message_blank
     narrator "A garbled message scrolls across the display, fractured and incomplete."
+    scene control_panel_message_corrupt
     narrator ">> INCOMING MESSAGE: [[DATA CORRUPTED 97%%]"
     narrator "> T_//S?L| :: P*_T_C_L B_R_K_N"
     narrator "> *_ST## ##A___"
@@ -361,7 +366,10 @@ label scan_threats:
     jump decrypt_minigame
 
 label decrypt_minigame:
-    narrator "Your hands move over the console's tangled internals. Pipe-like conduits for the signal matrix. Every wrong connection bleeds power. Every right one brings the message closer to clarity."
+    scene engine_room_loop
+    narrator "You head towards the engine room to restore power and decrypt the message."
+    narrator "Your hands move over the tangled-wires, inspecting them. Pipe-like conduits for the signal matrix."
+    narrator "Every wrong connection bleeds power. Every right one brings the message closer to clarity."
     stop music
     stop sound
     play music alarm volume 0.1 if_changed
@@ -370,11 +378,15 @@ label decrypt_minigame:
     jump message_results
 
 label message_results:
-    narrator "Your fingers fly across the console. Connections spark. The matrix stabilizes."
+    narrator "Your fingers fly across the electrical junction box. Connections spark. The matrix stabilizes."
+    scene engine_room
+    narrator "Sucessful in restoring power, you head back to the control panel."
+    scene control_panel_alert_loop
     stop music
     play music choice_screen_selection_with_beats_tense loop volume 0.2
     play sound engine_boots_up volume 0.1
     narrator "The console flickers, then steadies. The decrypted message scrolls slowly across the screen:"
+    scene control_panel_message_decrypted
     narrator ">> INCOMING MESSAGE [[PARTIAL DECRYPTION SUCCESSFUL]"
     narrator "> TASSILI NOT SAFE"
     narrator "> PROTOCOL BROKEN"
@@ -481,10 +493,10 @@ label converge_ending:
     play music loading_music loop
     play sound choice_screen_selection_with_beats_tense loop volume 0.1
     narrator "The crew shares a final look, their faces etched with determination, fear, and resignation."
-    scene engine_room with dissolve
     narrator "The navigator grips the controls, guiding the ship on its final descent."
     with hpunch
     narrator "The engines shudder as they ignite, the hull trembling under the last desperate burn of fuel."
+    play sound engine_boots_up volume 0.1
     narrator "The planet fills the viewport, scarred, silent, waiting."
     narrator "Whatever waits below... you're committed now."
     jump end_game

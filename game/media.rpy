@@ -6,8 +6,15 @@ image engine_room_red_alert = "backgrounds/engine_room_red_alert.png"
 image engine_room_right_lights = "backgrounds/engine_room_right_lights.png"
 image engine_room_spotlight = "backgrounds/engine_room_spotlight.png"
 image hallway = "backgrounds/hallway.png"
+image hallway_door = "backgrounds/hallway_door.png"
 image hallway_both_lights = "backgrounds/hallway_both_lights.png"
 image hallway_one_light = "backgrounds/hallway_one_light.png"
+image control_panel_alert = "backgrounds/control_panel_alert.png"
+image control_panel_blank = "backgrounds/control_panel_blank.png"
+image control_panel_message_blank = "backgrounds/control_panel_message_blank.png"
+image control_panel_message_corrupt = "backgrounds/control_panel_message_corrupt.png"
+image control_panel_message_decrypted = "backgrounds/control_panel_message_decrypted.png"
+image control_panel_no_connection = "backgrounds/control_panel_no_connection.png"
 image galaxy = "backgrounds/galaxy.png"
 image c = "characters/commander.png"
 image a = "characters/ai_specialist.png"
@@ -42,6 +49,12 @@ image hallway_loop = Animation(
     "backgrounds/hallway_both_lights.png", 0.25,
     repeat=True
 )
+
+image control_panel_alert_loop = Animation(
+    "backgrounds/control_panel_blank.png", 0.25,
+    "backgrounds/control_panel_alert.png",0.25,
+)
+
 define loading_music = "audio/loading_screen/loading_screen_music.mp3"
 define cryo_chamber_hiss_long_1 = "audio/loading_screen/cryo_chamber_hiss_long_2.flac"
 define cryo_chamber_hiss_short = "audio/loading_screen/cryo_chamber_hiss_short.flac"
